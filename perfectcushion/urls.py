@@ -24,6 +24,7 @@ urlpatterns = [
     path('index/', views.index, name="index"),
     path('category/', views.category, name="category"),
     path('shop/', include('shop.urls')),
+    path('search/', include('search_app.urls')),
 ]
 
 
