@@ -25,6 +25,7 @@ urlpatterns = [
     path('category/', views.category, name="category"),
     path('shop/', include('shop.urls')),
     path('search/', include('search_app.urls')),
+    path('cart/', include('cart.urls')),
 ]
 
 
