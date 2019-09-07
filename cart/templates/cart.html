@@ -44,7 +44,7 @@
                         {% for cart_item in cart_items %}
                             <tr>
                                 <td>
-                                    <a href="cart_item.product.get_absolute_url">
+                                    <a href="{{cart_item.product.get_url}}">
                                         <img src="{{cart_item.product.image.url}}" alt="" class="float-left rounded custom_image">
                                     </a>
                                 </td>
@@ -65,20 +65,20 @@
                                         <a href="{% url 'cart:add_cart' cart_item.product.id%}" class="custom_a">
                                             <i class="fas fa-plus-circle custom_icon"></i>
                                         </a>&nbsp;
-                                        <a href="" class="custom_a">
+                                        <a href="{% url 'cart:cart_remove' cart_item.product.id%}" class="custom_a">
                                             <i class="fas fa-minus-circle custom_icon"></i>
                                         </a>&nbsp;
-                                        <a href="" class="custom_icon">
+                                        <a href="{% url 'cart:full_remove' cart_item.product.id%}" class="custom_icon">
                                             <i class="fas fa-trash-alt custom_icon"></i>
                                         </a>
                                     </td>
                                 {% else %}
                                     <td>
                                         &nbsp;
-                                        <a href="" class="custom_a">
+                                        <a href="{% url 'cart:cart_remove' cart_item.product.id%}" class="custom_a">
                                             <i class="fas fa-minus-circle custom_icon"></i>
                                         </a>&nbsp;
-                                        <a href="" class="custom_icon">
+                                        <a href="{% url 'cart:full_remove' cart_item.product.id%}" class="custom_icon">
                                             <i class="fas fa-trash-alt custom_icon"></i>
                                         </a>
                                     </td>
@@ -111,6 +111,22 @@
                     </tbody>
                 </table>
                 <div class="mx-auto">
+                    <form action="" method="POST">
+                    {% csrf_token %}
+                        <script
+                            src = "https://checkout.stripe.com/checkout.js" class="stripe-button"
+                            data-key = {{data_key}}
+                            data-amount = {{stripe_total}}
+                            data-name = "Perfect Cushion Shop"
+                            data-description = {{description}}
+                            data-image = "{% static 'img/logo.png' %}"
+                            data-locale = "auto"
+                            data-currency = "gbp"
+                            data-shipping-address = "true"
+                            data-billing-address = "true"
+                            data-zip-code = "true">
+                        </script>
+                    </form>
                     <a href="{% url 'shop:allProdCat' %}" class="btn btn-secondary btn-block my_custom_button">
                         Continue Shopping
                     </a>
