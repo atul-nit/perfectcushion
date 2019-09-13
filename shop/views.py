@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Category, Product
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
+from django.utils.translation import gettext as _
 
 def index(request):
     template = loader.get_template('index.html')
@@ -60,6 +61,11 @@ def ProdCatDetail(request, c_slug, product_slug):
     except Exception as e:
         raise e
     return render(request, 'shop/product.html', {'product': product})
+
+
+def myview(request):
+    output = _("Welcome to my site.")
+    return HttpResponse(output)
 
 
 
