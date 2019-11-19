@@ -1,0 +1,19 @@
+{% extends 'shop/base.html' %}
+{% load staticfiles %}
+{% block metadescription %}
+    Sign up to get a new account with us. The perfect cushion store has a variety of stunning and comfy cushions.
+{% endblock %}
+{% block title %}
+    Create a New Account - Perfect Cushion Store
+{% endblock %}
+{% block content %}
+    <div>
+        {% if not form.is_valid %}
+            <div class="mx-auto">
+                <br>
+                <h1 class="my_title text-center">Create a New Account</h1>
+            </div>
+        {% else %}
+        {% endif %}
+    </div>
+{% endblock %}

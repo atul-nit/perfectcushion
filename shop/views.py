@@ -1,9 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.template import loader
 from .models import Category, Product
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.utils.translation import gettext as _
+from django.contrib.auth.models import Group, User
+from .forms import SignUpForm
 
 def index(request):
     template = loader.get_template('index.html')
@@ -62,10 +64,30 @@ def ProdCatDetail(request, c_slug, product_slug):
         raise e
     return render(request, 'shop/product.html', {'product': product})
 
+def signupview(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            signup_user= User.objects.get(username=username)
+            customer_group = Group.objects.get(name='Customer')
+            customer_group.user_set.add(signup_user)
+    else:
+        form = SignUpForm()
+    return render(request, 'accounts/signup.html', {'form': form})
 
 def myview(request):
     output = _("Welcome to my site.")
     return HttpResponse(output)
+
+
+"""
+d = {"id": 100, "name": John}
+d["name"]
+d.get("name", "blah")
+
+"""
 
 
 
