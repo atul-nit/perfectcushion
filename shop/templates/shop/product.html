@@ -33,6 +33,25 @@
                     </div>
                 </div>
             </div>
+            <br>
+            <br>
+            <div class="row mx-auto">
+                <h2>Popular Products</h2>
+            {% for popular_product in popular %}
+                <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-md-12 col-lg-3">
+                    <div class="card text-center" style="width: 18rem;">
+                        <a href="{{ popular_product.get_url }}">
+                            <img class="card-img-top my_image" src="{{ popular_product.image.url }}" alt="{{popular_product.name}}">
+                            <div class="card-body">
+                                <h4>{{ popular_product.name }}</h4>
+                                <p>${{ popular_product.price }}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
         </div>
     </div>
 {% endblock %}

@@ -1,4 +1,5 @@
 from django.db import connection
+from .utilities.merge import mergeSort
 
 actions_for_list = ['data_from_table', 'prepare_result' 'send_response']
 
@@ -37,3 +38,27 @@ def get_product_list_name():
         actions_completed = check_actions_completed(action_obj)
     return {"result": result, "actions_completed": actions_completed}
     # return result
+
+def get_all_ids():
+    all_ids = []
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT id from shop_product')
+        for row in cursor:
+            all_ids.append(row[0])
+    return all_ids
+
+def get_all_products():
+    result = []
+    # ids = [5,1,2]
+    product_ids = get_all_ids()
+    print("product ids: {}".format(product_ids))
+    ids = mergeSort(product_ids, 0, len(product_ids) - 1)
+    print("product ids: {}".format(ids))
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT id, name, slug, price, stock FROM shop_product where id in (%s)' %(', '.join(str(id) for id in ids)))
+        for product in cursor:
+            result.append(product)
+    actions_completed = True
+    return {"result": result, "actions_completed": actions_completed}
+
+

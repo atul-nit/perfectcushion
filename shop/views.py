@@ -60,9 +60,10 @@ def product(request, prod_id):
 def ProdCatDetail(request, c_slug, product_slug):
     try:
         product = Product.objects.get(category__slug=c_slug, slug=product_slug)
+        popular = Product.objects.all().order_by('popularity')[:5]
     except Exception as e:
         raise e
-    return render(request, 'shop/product.html', {'product': product})
+    return render(request, 'shop/product.html', {'product': product, 'popular': popular})
 
 def signupview(request):
     if request.method == 'POST':
