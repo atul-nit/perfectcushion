@@ -1,5 +1,9 @@
 from django.contrib import admin
+from django.http import HttpResponse
+import csv
 from .models import OrderItem, Order
+from .order_analytics import get_order_list
+from .order_analytics import get_order_three_months_old
 
 
 class OrderItemAdmin(admin.TabularInline):
@@ -17,6 +21,7 @@ class OrderItemAdmin(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    actions = ['get_order_list', 'get_order_list_three_months_old']
     list_display = ['id', 'billingName', 'email_address', 'created']
     list_display_links = ('id', 'billingName')
     search_fields = ['id', 'billingName', 'email_address']
@@ -40,3 +45,27 @@ class OrderAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+    def get_order_list(self, request, queryset):
+        field_names = ["Order ID", "Order Value", "Customer Email", "Order Created At"]
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename={}.csv'.format("orderlist")
+        writer = csv.writer(response)
+        writer.writerow(field_names)
+        result = get_order_list()
+        orders_list = result["result"]
+        for item in orders_list:
+            writer.writerow(item)
+        return response
+
+    def get_order_list_three_months_old(self, request, queryset):
+        field_names = ["Order ID", "Order Value", "Customer Email", "Order Created At"]
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename={}.csv'.format("orderlist_3months_old")
+        writer = csv.writer(response)
+        writer.writerow(field_names)
+        result = get_order_three_months_old()
+        orders_list = result["result"]
+        for item in orders_list:
+            writer.writerow(item)
+        return response
