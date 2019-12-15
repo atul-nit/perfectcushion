@@ -33,24 +33,38 @@
                     </div>
                 </div>
             </div>
-            <br>
-            <br>
-            <div class="row mx-auto">
-                <h2>Popular Products</h2>
-            {% for popular_product in popular %}
-                <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-md-12 col-lg-3">
-                    <div class="card text-center" style="width: 18rem;">
-                        <a href="{{ popular_product.get_url }}">
-                            <img class="card-img-top my_image" src="{{ popular_product.image.url }}" alt="{{popular_product.name}}">
-                            <div class="card-body">
-                                <h4>{{ popular_product.name }}</h4>
-                                <p>${{ popular_product.price }}</p>
+
+
+
+
+
+
+
+
+
+            <div class="row">
+                <h1 class="text-center" style="width:100%;">Popular Products</h1>
+                <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
+                <div class="MultiCarousel-inner">
+                    {% for popular_product in popular %}
+                    <div class="item" style="width:190px;">
+                        <div class="pad15">
+                            <div class="card text-center">
+                                <a href="{{ popular_product.get_url }}">
+                                    <img class="card-img-top my_image" style="height:200px;" src="{{ popular_product.image.url }}" alt="{{popular_product.name}}">
+                                    <div class="card-body" style="height:100px;">
+                                        <h4 style="font-size:10px;">{{ popular_product.name }}</h4>
+                                        <p>${{ popular_product.price }}</p>
+                                    </div>
+                                </a>
                             </div>
-                        </a>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-        </div>
+                </div>
+
+            </div>
 
         </div>
     </div>
